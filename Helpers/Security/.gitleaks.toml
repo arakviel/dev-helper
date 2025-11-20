@@ -1,0 +1,68 @@
+# Gitleaks configuration file
+# This file defines rules for detecting secrets and sensitive information
+
+title = "Gitleaks Config"
+
+[extend]
+# You can extend from default rules or other configurations
+# paths = ["default"]
+
+[[rules]]
+id = "api-key"
+description = "API Key Detected"
+regex = '''[aA][pP][iI]_?[kK][eE][yY].*['|"][0-9a-zA-Z]{32,45}['|"]'''
+tags = ["key", "API"]
+
+[[rules]]
+id = "password"
+description = "Password in plain text"
+regex = '''[pP][aA][sS][sS][wW][oO][rR][dD].*['|"][a-zA-Z0-9]{8,}['|"]'''
+tags = ["password", "key"]
+
+[[rules]]
+id = "private-key"
+description = "Private Key"
+regex = '''-----BEGIN (RSA |DSA |EC |OPENSSH )?PRIVATE KEY-----'''
+tags = ["private", "key"]
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS Access Key"
+regex = '''AKIA[0-9A-Z]{16}'''
+tags = ["AWS", "key"]
+
+[[rules]]
+id = "aws-secret-key"
+description = "AWS Secret Key"
+regex = '''[0-9a-zA-Z/+]{40}'''
+tags = ["AWS", "secret"]
+
+[[rules]]
+id = "github-token"
+description = "GitHub Token"
+regex = '''ghp_[0-9a-zA-Z]{36}'''
+tags = ["GitHub", "token"]
+
+[[rules]]
+id = "slack-token"
+description = "Slack Token"
+regex = '''xox[baprs]-([0-9a-zA-Z]{10,48})'''
+tags = ["Slack", "token"]
+
+[[rules]]
+id = "generic-secret"
+description = "Generic Secret"
+regex = '''[sS][eE][cC][rR][eE][tT].*['|"][0-9a-zA-Z]{32,45}['|"]'''
+tags = ["secret"]
+
+# Exit code when secrets are found (default is 1)
+exit-code = 1
+
+# Maximum file size to scan (in MB)
+max-target-megabytes = 10
+
+# Log level (trace, debug, info, warn, error, fatal)
+log-level = "info"
+
+# Enable redaction of secrets in output
+redact = true
